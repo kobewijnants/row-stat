@@ -18,7 +18,7 @@ A web application for tracking and analyzing rowing statistics.
    ```
 3. Start the development server:
    ```bash
-   ng serve
+   npm start
    ```
 4. Open your browser and navigate to `http://localhost:4200`
 
