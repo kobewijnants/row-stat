@@ -1,0 +1,91 @@
+<div class="filter-container">
+  <div class="filter-header" (click)="toggleFilters()">
+    <h3>Filters</h3>
+    <span class="toggle-icon">{{ isExpanded ? '▼' : '▶' }}</span>
+  </div>
+  
+  <div class="filter-content" [class.expanded]="isExpanded">
+    <div class="filter-section">
+      <h4>Time Frame</h4>
+      <select [(ngModel)]="filterOptions.timeFrame" (change)="onFilterChange()">
+        <option *ngFor="let frame of timeFrames" [value]="frame.value">
+          {{ frame.label }}
+        </option>
+      </select>
+    </div>
+
+    <div class="filter-section">
+      <h4>Distance (m)</h4>
+      <div class="range-inputs">
+        <input type="number" [(ngModel)]="filterOptions.distance.min" (change)="onFilterChange()" placeholder="Min">
+        <span>to</span>
+        <input type="number" [(ngModel)]="filterOptions.distance.max" (change)="onFilterChange()" placeholder="Max">
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Calories</h4>
+      <div class="range-inputs">
+        <input type="number" [(ngModel)]="filterOptions.calories.min" (change)="onFilterChange()" placeholder="Min">
+        <span>to</span>
+        <input type="number" [(ngModel)]="filterOptions.calories.max" (change)="onFilterChange()" placeholder="Max">
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Average Watts</h4>
+      <div class="range-inputs">
+        <input type="number" [(ngModel)]="filterOptions.averageWatts.min" (change)="onFilterChange()" placeholder="Min">
+        <span>to</span>
+        <input type="number" [(ngModel)]="filterOptions.averageWatts.max" (change)="onFilterChange()" placeholder="Max">
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Max Watts</h4>
+      <div class="range-inputs">
+        <input type="number" [(ngModel)]="filterOptions.maxWatts.min" (change)="onFilterChange()" placeholder="Min">
+        <span>to</span>
+        <input type="number" [(ngModel)]="filterOptions.maxWatts.max" (change)="onFilterChange()" placeholder="Max">
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Average SPM</h4>
+      <div class="range-inputs">
+        <input type="number" [(ngModel)]="filterOptions.averageSPM.min" (change)="onFilterChange()" placeholder="Min">
+        <span>to</span>
+        <input type="number" [(ngModel)]="filterOptions.averageSPM.max" (change)="onFilterChange()" placeholder="Max">
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Max SPM</h4>
+      <div class="range-inputs">
+        <input type="number" [(ngModel)]="filterOptions.maxSPM.min" (change)="onFilterChange()" placeholder="Min">
+        <span>to</span>
+        <input type="number" [(ngModel)]="filterOptions.maxSPM.max" (change)="onFilterChange()" placeholder="Max">
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Average Split</h4>
+      <div class="range-inputs">
+        <input type="text" [(ngModel)]="filterOptions.averageSplit.min" (change)="onFilterChange()" placeholder="Min (MM:SS)">
+        <span>to</span>
+        <input type="text" [(ngModel)]="filterOptions.averageSplit.max" (change)="onFilterChange()" placeholder="Max (MM:SS)">
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Max Split</h4>
+      <div class="range-inputs">
+        <input type="text" [(ngModel)]="filterOptions.maxSplit.min" (change)="onFilterChange()" placeholder="Min (MM:SS)">
+        <span>to</span>
+        <input type="text" [(ngModel)]="filterOptions.maxSplit.max" (change)="onFilterChange()" placeholder="Max (MM:SS)">
+      </div>
+    </div>
+
+    <button class="clear-button" (click)="clearFilters()">Clear All Filters</button>
+  </div>
+</div> 

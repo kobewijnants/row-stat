@@ -1,0 +1,154 @@
+<div class="stats-container">
+  <div class="sidebar">
+    <app-stats-filter (filterChange)="onFilterChange($event)"></app-stats-filter>
+  </div>
+  
+  <div class="content">
+    <div class="stats-summary">
+      <div class="stat-card">
+        <h3>Total Distance</h3>
+        <p class="stat-value">{{ filteredStats | sum:'distance' | number:'1.0-0' }}m</p>
+      </div>
+      <div class="stat-card">
+        <h3>Total Time</h3>
+        <p class="stat-value">{{ filteredStats | sum:'time' }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Total Calories</h3>
+        <p class="stat-value">{{ filteredStats | sum:'calories' | number:'1.0-0' }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Average Watts</h3>
+        <p class="stat-value">{{ filteredStats | average:'averageWatts' | number:'1.0-0' }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Max Watts</h3>
+        <p class="stat-value">{{ filteredStats | max:'maxWatts' | number:'1.0-0' }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Average SPM</h3>
+        <p class="stat-value">{{ filteredStats | average:'strokesPerMinute' | number:'1.0-0' }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Max SPM</h3>
+        <p class="stat-value">{{ filteredStats | max:'maxStrokesPerMinute' | number:'1.0-0' }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Average Split</h3>
+        <p class="stat-value">{{ filteredStats | averageSplit }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Max Split</h3>
+        <p class="stat-value">{{ filteredStats | maxSplit }}</p>
+      </div>
+    </div>
+
+    <div class="recent-activities">
+      <div class="activities-header">
+        <h2>Activities</h2>
+        <div class="pagination-info">
+          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} - {{ Math.min(currentPage * itemsPerPage, filteredStats.length) }} of {{ filteredStats.length }}
+        </div>
+      </div>
+      <div class="activity-list">
+        <div *ngFor="let stat of getPaginatedStats()" class="activity-card">
+          <div class="activity-date">{{ stat.date | date:'mediumDate' }}</div>
+          <div class="activity-details">
+            <div class="activity-metric">
+              <span class="label">Distance:</span>
+              <span class="value">{{ stat.distance | number:'1.0-0' }}m</span>
+            </div>
+            <div class="activity-metric">
+              <span class="label">Time:</span>
+              <span class="value">{{ stat.time }}</span>
+            </div>
+            <div class="activity-metric">
+              <span class="label">Calories:</span>
+              <span class="value">{{ stat.calories | number:'1.0-0' }}</span>
+            </div>
+            <div class="activity-metric">
+              <span class="label">Avg Watts:</span>
+              <span class="value">{{ stat.averageWatts | number:'1.0-0' }}</span>
+            </div>
+            <div class="activity-metric">
+              <span class="label">Avg SPM:</span>
+              <span class="value">{{ stat.strokesPerMinute | number:'1.0-0' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pagination-controls">
+        <button 
+          class="pagination-button" 
+          (click)="previousPage()" 
+          [disabled]="currentPage === 1"
+        >
+          Previous
+        </button>
+        <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+        <button 
+          class="pagination-button" 
+          (click)="nextPage()" 
+          [disabled]="currentPage === totalPages"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+
+    <div class="charts-container">
+      <div class="chart-wrapper">
+        <div class="chart-header">
+          <h3>Distance Over Time</h3>
+          <button class="fullscreen-button" (click)="openModal('distance')">⛶</button>
+        </div>
+        <app-distance-chart [stats]="filteredStats"></app-distance-chart>
+      </div>
+
+      <div class="chart-wrapper">
+        <div class="chart-header">
+          <h3>Calories Over Time</h3>
+          <button class="fullscreen-button" (click)="openModal('calories')">⛶</button>
+        </div>
+        <app-calories-chart [stats]="filteredStats"></app-calories-chart>
+      </div>
+
+      <div class="chart-wrapper">
+        <div class="chart-header">
+          <h3>Performance Metrics</h3>
+          <button class="fullscreen-button" (click)="openModal('performance')">⛶</button>
+        </div>
+        <app-performance-chart [stats]="filteredStats"></app-performance-chart>
+      </div>
+
+      <div class="chart-wrapper">
+        <div class="chart-header">
+          <h3>Strokes Per Minute</h3>
+          <button class="fullscreen-button" (click)="openModal('strokes')">⛶</button>
+        </div>
+        <app-strokes-chart [stats]="filteredStats"></app-strokes-chart>
+      </div>
+
+      <div class="chart-wrapper">
+        <div class="chart-header">
+          <h3>Split Time</h3>
+          <button class="fullscreen-button" (click)="openModal('split')">⛶</button>
+        </div>
+        <app-split-time-chart [stats]="filteredStats"></app-split-time-chart>
+      </div>
+    </div>
+  </div>
+
+  <app-chart-modal *ngIf="showModal" (closeModal)="closeModal()">
+    <div class="modal-chart">
+      <h2>{{ modalChart | titlecase }} Chart</h2>
+      <ng-container [ngSwitch]="modalChart">
+        <app-calories-chart *ngSwitchCase="'calories'" [stats]="filteredStats"></app-calories-chart>
+        <app-performance-chart *ngSwitchCase="'performance'" [stats]="filteredStats"></app-performance-chart>
+        <app-strokes-chart *ngSwitchCase="'strokes'" [stats]="filteredStats"></app-strokes-chart>
+        <app-split-time-chart *ngSwitchCase="'split'" [stats]="filteredStats"></app-split-time-chart>
+        <app-distance-chart *ngSwitchCase="'distance'" [stats]="filteredStats"></app-distance-chart>
+      </ng-container>
+    </div>
+  </app-chart-modal>
+</div> 

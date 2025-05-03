@@ -1,0 +1,25 @@
+<div class="table-container">
+  <h3>Recent Activities</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Distance (m)</th>
+        <th>Calories</th>
+        <th>Avg Watts</th>
+        <th>SPM</th>
+        <th>Max Watts</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let stat of sortedStats">
+        <td>{{ stat.date ? (stat.date | date:'shortDate') : 'N/A' }}</td>
+        <td>{{ stat.distance }}</td>
+        <td>{{ stat.calories }}</td>
+        <td>{{ stat.averageWatts }}</td>
+        <td>{{ stat.strokesPerMinute }}</td>
+        <td>{{ stat.maxWatts }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div> 

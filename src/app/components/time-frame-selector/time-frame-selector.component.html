@@ -1,0 +1,8 @@
+<div class="time-frame-container">
+  <label for="timeFrame">Time Frame:</label>
+  <select id="timeFrame" [(ngModel)]="selectedTimeFrame" (change)="onTimeFrameChange()">
+    <option *ngFor="let frame of timeFrames" [value]="frame.value">
+      {{ frame.label }}
+    </option>
+  </select>
+</div> 
